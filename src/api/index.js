@@ -1,4 +1,3 @@
-
 import { v4 } from 'node-uuid';
 
 // This is a fake in-memory implementation of something
@@ -24,11 +23,7 @@ const delay = (ms) =>
   new Promise(resolve => setTimeout(resolve, ms));
 
 export const fetchTodos = (filter) =>
-  delay(5000).then(() => {
-    if (Math.random() > 0.5) {
-      throw new Error('Boom!');
-    }
-
+  delay(500).then(() => {
     switch (filter) {
       case 'all':
         return fakeDatabase.todos;
@@ -39,4 +34,22 @@ export const fetchTodos = (filter) =>
       default:
         throw new Error(`Unknown filter: ${filter}`);
     }
+  });
+
+export const addTodo = (text) =>
+  delay(500).then(() => {
+    const todo = {
+      id: v4(),
+      text,
+      completed: false,
+    };
+    fakeDatabase.todos.push(todo);
+    return todo;
+  });
+
+export const toggleTodo = (id) =>
+  delay(500).then(() => {
+    const todo = fakeDatabase.todos.find(t => t.id === id);
+    todo.completed = !todo.completed;
+    return todo;
   });
